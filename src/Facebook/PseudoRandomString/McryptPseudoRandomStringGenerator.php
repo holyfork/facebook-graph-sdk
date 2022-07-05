@@ -25,6 +25,7 @@ namespace Facebook\PseudoRandomString;
 
 use Facebook\Exceptions\FacebookSDKException;
 
+/** @deprecated since PHP 7.2 */
 class McryptPseudoRandomStringGenerator implements PseudoRandomStringGeneratorInterface
 {
     use PseudoRandomStringGeneratorTrait;
@@ -39,12 +40,10 @@ class McryptPseudoRandomStringGenerator implements PseudoRandomStringGeneratorIn
      */
     public function __construct()
     {
-        if (!function_exists('mcrypt_create_iv')) {
             throw new FacebookSDKException(
                 static::ERROR_MESSAGE .
                 'The function mcrypt_create_iv() does not exist.'
             );
-        }
     }
 
     /**
@@ -52,17 +51,9 @@ class McryptPseudoRandomStringGenerator implements PseudoRandomStringGeneratorIn
      */
     public function getPseudoRandomString($length)
     {
-        $this->validateLength($length);
-
-        $binaryString = mcrypt_create_iv($length, MCRYPT_DEV_URANDOM);
-
-        if ($binaryString === false) {
-            throw new FacebookSDKException(
-                static::ERROR_MESSAGE .
-                'mcrypt_create_iv() returned an error.'
-            );
-        }
-
-        return $this->binToHex($binaryString, $length);
+        throw new FacebookSDKException(
+            static::ERROR_MESSAGE .
+            'The function mcrypt_create_iv() does not exist.'
+        );
     }
 }

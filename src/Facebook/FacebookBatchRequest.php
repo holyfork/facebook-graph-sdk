@@ -225,7 +225,9 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
         $batchCount = count($this->requests);
         if ($batchCount === 0) {
             throw new FacebookSDKException('There are no batch requests to send.');
-        } elseif ($batchCount > 50) {
+        }
+
+        if ($batchCount > 50) {
             // Per: https://developers.facebook.com/docs/graph-api/making-multiple-requests#limits
             throw new FacebookSDKException('You cannot send more than 50 batch requests at a time.');
         }
@@ -280,10 +282,8 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
 
     /**
      * Get an iterator for the items.
-     *
-     * @return ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->requests);
     }
@@ -291,7 +291,7 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
     /**
      * @inheritdoc
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->add($value, $offset);
     }
@@ -299,7 +299,7 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
     /**
      * @inheritdoc
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->requests[$offset]);
     }
@@ -307,7 +307,7 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
     /**
      * @inheritdoc
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->requests[$offset]);
     }
@@ -317,6 +317,6 @@ class FacebookBatchRequest extends FacebookRequest implements IteratorAggregate,
      */
     public function offsetGet($offset)
     {
-        return isset($this->requests[$offset]) ? $this->requests[$offset] : null;
+        return $this->requests[$offset] ?? null;
     }
 }
