@@ -184,6 +184,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     /**
      * Get an item at a given offset.
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->items[$offset] ?? null;
